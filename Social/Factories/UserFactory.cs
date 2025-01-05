@@ -17,7 +17,7 @@ public class UserFactory
     {
         return new UserContactProfile()
         {
-            Id = UniqueIdentifierGenerator.GenerateUserId(),
+            Id = null!, // This is assigned in the CreateUserProfile() method in UserService. The handler responsible is tested separetely.
             FirstName = form.FirstName,
             LastName = form.LastName,
             Email = form.Email,
@@ -27,6 +27,4 @@ public class UserFactory
             PostalNumber = form.PostalNumber
         };
     }
-
-
 }

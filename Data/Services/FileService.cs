@@ -9,8 +9,6 @@ public class FileService(string directoryPath = "Data", string filePath = "conte
     private readonly string _directoryPath = directoryPath;
     private readonly string _filePath = filePath;
 
-
-
     public bool SaveContentToFile(string content)
     {
         try

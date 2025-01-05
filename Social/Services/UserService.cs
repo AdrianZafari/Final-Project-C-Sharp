@@ -15,6 +15,7 @@ public class UserService: IUserService
 {
     private readonly IFileService _fileService;
     private List<UserContactProfile> _userContactProfiles = new List<UserContactProfile>();
+    public string json = string.Empty;
 
     public UserService(IFileService fileService)
     {
@@ -33,6 +34,8 @@ public class UserService: IUserService
         try
         {
             var userProfile = UserFactory.Create(form);
+            userProfile.Id = UniqueIdentifierGenerator.GenerateUserId();
+
             _userContactProfiles.Add(userProfile);
 
             var json = JsonSerializer.Serialize(_userContactProfiles);
@@ -54,7 +57,7 @@ public class UserService: IUserService
                 return new List<UserContactProfile>();
 
             _userContactProfiles = JsonSerializer.Deserialize<List<UserContactProfile>>(json) ?? new List<UserContactProfile>();
-            return _userContactProfiles.AsReadOnly();
+            return _userContactProfiles;
         }
         catch (Exception ex)
         {
@@ -65,11 +68,6 @@ public class UserService: IUserService
 
     public bool UpdateUserProfile(string userId, UserContactForm updatedForm)
     {
-        if (!ValidateUserContactForm.IsValidUserContactForm(updatedForm))
-        {
-            Debug.WriteLine($"Invalid first or last name given on user contact form.");
-            return false;
-        }
 
         var targetUser = _userContactProfiles.FirstOrDefault(u => u.Id == userId);
         if (targetUser == null)
@@ -77,6 +75,8 @@ public class UserService: IUserService
             Debug.WriteLine($"User with ID {userId} was not found.");
             return false;
         }
+
+        // Change the following to an equality condition instead of null or white space (this is for GUI implementation down the line)
 
         if (!string.IsNullOrWhiteSpace(updatedForm.FirstName))
             targetUser.FirstName = updatedForm.FirstName;
@@ -101,7 +101,7 @@ public class UserService: IUserService
 
         try
         {
-            var json = JsonSerializer.Serialize(_userContactProfiles);
+            json = JsonSerializer.Serialize(_userContactProfiles);
             return _fileService.SaveContentToFile(json);
         }
         catch (Exception ex)
@@ -134,6 +134,4 @@ public class UserService: IUserService
             return false;
         }
     }
-
-
 }
