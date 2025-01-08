@@ -17,6 +17,7 @@ public class MainMenuDialogues (IUserService userService) : IMainMenuDialogues
         while (running)
         {
             Console.Clear();
+            Console.WriteLine(string.Empty);
             Console.WriteLine("--------- USER MANAGEMENT ---------");
             Console.WriteLine("1. Create New User");
             Console.WriteLine("2. View All Users");

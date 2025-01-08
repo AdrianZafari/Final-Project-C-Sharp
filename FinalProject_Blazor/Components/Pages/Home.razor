@@ -1,0 +1,32 @@
+﻿@page "/"
+@using Social.Interfaces
+@using DTOs.Models
+@inject IUserService UserService
+
+<h1 class="fw-bold mb-4">My Contacts</h1>
+
+
+@if (@UserService.GetUserProfiles().Any())
+{
+	<ul class="list-unstyled ">
+		@foreach (var user in UserService.GetUserProfiles())
+		{
+			<li class="p-3 rounded-3 mb-2" style = "background-color: #c6c6c6;">
+				<div style="width: 40px; height: 40px; display: inline-block; margin-right:0.5rem;">
+					<img src="Images/person-circle.svg" style="width:100%;"/>
+				</div>
+				<strong style="font-size:1.2em;">@user.FirstName @user.LastName</strong>
+			</li>
+		}
+	</ul>
+}
+else
+{
+	<p>No user data found</p>
+}
+
+
+
+
+
+
