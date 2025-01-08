@@ -13,10 +13,15 @@ public class FileService(string directoryPath = "Data", string filePath = "conte
     {
         try
         {
-            if (!Directory.Exists(_directoryPath))
+            if (!Directory.Exists(_directoryPath)) 
+            { 
                 Directory.CreateDirectory(_directoryPath);
-
-            File.WriteAllText(_filePath, content);
+                File.WriteAllText(_filePath, content);
+            }
+            else
+            {
+                File.WriteAllText(_filePath, content);
+            }
             return true;
         }
         catch

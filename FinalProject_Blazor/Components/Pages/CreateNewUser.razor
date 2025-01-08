@@ -47,7 +47,7 @@
         <label for="municipality" class="pb-1">Municipality</label>
         <InputText id="municipality" class="form-control" @bind-Value="userContactForm.Municipality" />
     </div>
-    
+
     <button type="submit" class="btn btn-primary mt-3 float-md-end ">Add Contact</button>
 
 </EditForm>
@@ -56,10 +56,12 @@
 
 @code {
     private UserContactForm userContactForm = new UserContactForm();
-    private string message;
+    private string message = "";
 
     private void HandleSubmit() 
     {
+        UserService.GetUserProfiles();
+
         bool isSuccess = UserService.CreateUserProfile(userContactForm);
         if (isSuccess)
         {
