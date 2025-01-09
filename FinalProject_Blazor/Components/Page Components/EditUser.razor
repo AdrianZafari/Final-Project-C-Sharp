@@ -1,0 +1,162 @@
+﻿@page "/EditUser"
+@using Social.Interfaces
+@using DTOs.DTOs
+@using DTOs.Models
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+
+<h1 class="fw-bold mb-4">Edit Contact</h1>
+
+<p>To edit a contact, fill in the fields that you want to update with new information.</p>
+<hr class="mb-5" />
+
+<EditForm Model="@updatedUserContactForm" OnValidSubmit="HandleSubmit" autocomplete="off">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group pb-2">
+        <label for="firstName" class="pb-1">First Name</label>
+        <InputText id="firstName" class="form-control" @bind-Value="updatedUserContactForm.FirstName" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-2">
+        <label for="lastName" class="pb-1">Last Name</label>
+        <InputText id="lastName" class="form-control" @bind-Value="updatedUserContactForm.LastName" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-2">
+        <label for="email" class="pb-1">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="updatedUserContactForm.Email" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-2">
+        <label for="phoneNumber" class="pb-1">Phone Number</label>
+        <InputText id="phoneNumber" class="form-control" @bind-Value="updatedUserContactForm.PhoneNumber" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-2">
+        <label for="address" class="pb-1">Address</label>
+        <InputText id="address" class="form-control" @bind-Value="updatedUserContactForm.Address" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-2">
+        <label for="postalNumber" class="pb-1">Postal Number</label>
+        <InputText id="postalNumber" class="form-control" @bind-Value="updatedUserContactForm.PostalNumber" autocomplete="off"/>
+    </div>
+
+    <div class="form-group pb-4">
+        <label for="municipality" class="pb-1">Municipality</label>
+        <InputText id="municipality" class="form-control" @bind-Value="updatedUserContactForm.Municipality" autocomplete="off"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 float-md-end">Update Contact</button>
+</EditForm>
+
+<p class="@messageClass">@message</p>
+
+
+
+
+
+@code {
+    /* This is probably the least intuitive/most complicated bit of code in this whole project. It's what I struggled the most with, namely because I wasn't entirely certain where to begin. 
+     * I used ChatGPT to point  me in the direction of the right methods for this purpose, and googled around when that would inevitably fail me.
+     * 
+     * There may have been other ways to get the user.id attribute to where it needed to go, however this was the method that wound up working after much trial and error.
+     * Perhaps there's a better way of doing it, but in essence we have passed a parameter via the URL. This is effectively the function of the URI, we are pushing something over 
+     * to the page we are looking to go to, to be used on that page, in this case, that would be the user.id attribute of a target UserContactProfile.
+     * 
+     * NavigateToEdit() in the Home.razor file handles this, really it's just a key value pair that we're sneaking through the URL, or at least that's what it seems to me. 
+     * The idea here is that we navigate to the URL, which is this page as denoted by the @Page rule, however we are passing the URI which includes any key-value pairs that we specify.
+     * On Initialization, we load the whole URI, which is loaded as a string. Uri(uri).Query identifies that we have snuck something extra (Query Parameters) through the URL and stores it.
+     * 
+     * After doing a check to see if what we have is valid, we start breaking the string down, first getting rid of the "?" in the queryParams and then as per standard practice, 
+     * we split the query params at the & (in cases where more KV pairs are passed through) and look for the key that we're interested in, 
+     * splitting there as well at the "=" to get the value. Once we have that, I load in the list of Contacts and target the one profile that contains our userId, 
+     * then life becomes very easy and everything is standard fair. 
+     * 
+     * There's also an async thing that I thought would be cool to do here where I just had it return to the Contacts page after successfully updating a contact. Afterwards I went and 
+     * added it to the CreateNewUser page. I don't think people typically add a bunch of contacts in one go, so I thought the user would want to see their contact in the list.
+     * 
+     */
+
+    [Parameter] public string? userId { get; set; }
+    private UserContactForm updatedUserContactForm = new UserContactForm();
+    private string message = "";
+    private string messageClass = "";
+
+    
+    protected override void OnInitialized()
+    {
+        var uri = NavigationManager.Uri; 
+
+        // Manually extract query parameters from the URL
+        var queryParams = new Uri(uri).Query;
+
+        if (!string.IsNullOrEmpty(queryParams) && queryParams.Contains("userId"))
+        {
+            var queryParam = queryParams.Split('?')[1];
+            var keyValue = queryParam.Split('&').FirstOrDefault(kv => kv.StartsWith("userId="));
+
+            if (keyValue != null)
+            {
+                userId = keyValue.Split('=')[1];
+            }
+        }
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var user = UserService.GetUserProfiles().FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                updatedUserContactForm = new UserContactForm
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        Address = user.Address,
+                        PostalNumber = user.PostalNumber,
+                        Municipality = user.Municipality
+                    };
+            }
+            else
+            {
+                message = "User not found!";
+                messageClass = "text-danger";
+            }
+        }
+        else
+        {
+            message = "Invalid user ID!";
+            messageClass = "text-danger";
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        bool isSuccess = UserService.UpdateUserProfile(userId!, updatedUserContactForm);
+        if (isSuccess)
+        {
+            message = "User updated successfully! Returning to Contacts...";
+            messageClass = "text-success fw-bold";
+
+            await ReturnHome();
+
+        }
+        else
+        {
+            message = "Error updating user. Please try again.";
+            messageClass = "text-danger fw-bold";
+        }
+    }
+
+
+    private async Task ReturnHome()
+    {
+        await Task.Delay(1500);
+        NavigationManager.NavigateTo("/");
+    }
+
+}

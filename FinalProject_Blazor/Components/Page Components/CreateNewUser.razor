@@ -2,6 +2,7 @@
 @using Social.Interfaces
 @using DTOs.DTOs
 @inject IUserService UserService
+@inject NavigationManager NavigationManager
 
 
 <h1 class="fw-bold mb-4">Add New Contact</h1>
@@ -9,68 +10,80 @@
 <p>To add a new contact, please fill in the information below and press "Add Contact".</p>
 <hr class="mb-5"/>
 
-<EditForm Model="@userContactForm" OnValidSubmit="HandleSubmit" >
+<EditForm Model="@userContactForm" OnValidSubmit="HandleSubmit" autocomplete="off">
     <DataAnnotationsValidator /> <!--  Handles [Required] attributes in the supplied model -> 
     <ValidationSummary /> <!-- Displays validation messages in case of improper user inputs -> 
 
     <div class="form-group pb-2 ">
         <label for="firstName" class = "pb-1">First Name</label>
-        <InputText id="firstName" class="form-control" @bind-Value="userContactForm.FirstName" />
+        <InputText id="firstName" class="form-control" @bind-Value="userContactForm.FirstName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
         <label for="lastName" class = "pb-1">Last Name</label>
-        <InputText id="lastName" class="form-control" @bind-Value="userContactForm.LastName" />
+        <InputText id="lastName" class="form-control" @bind-Value="userContactForm.LastName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
         <label for="email" class="pb-1">Email</label>
-        <InputText id="email" class="form-control" @bind-Value="userContactForm.Email" />
+        <InputText id="email" class="form-control" @bind-Value="userContactForm.Email" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
         <label for="phoneNumber"class = "pb-1">Phone Number</label>
-        <InputText id="phoneNumber" class="form-control" @bind-Value="userContactForm.PhoneNumber" />
+        <InputText id="phoneNumber" class="form-control" @bind-Value="userContactForm.PhoneNumber" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
         <label for="address" class="pb-1">Address</label>
-        <InputText id="address" class="form-control" @bind-Value="userContactForm.Address" />
+        <InputText id="address" class="form-control" @bind-Value="userContactForm.Address" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
         <label for="postalNumber" class="pb-1">Postal Number</label>
-        <InputText id="postalNumber" class="form-control" @bind-Value="userContactForm.PostalNumber" />
+        <InputText id="postalNumber" class="form-control" @bind-Value="userContactForm.PostalNumber" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-4">
         <label for="municipality" class="pb-1">Municipality</label>
-        <InputText id="municipality" class="form-control" @bind-Value="userContactForm.Municipality" />
+        <InputText id="municipality" class="form-control" @bind-Value="userContactForm.Municipality" autocomplete="off"/>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3 float-md-end ">Add Contact</button>
 
 </EditForm>
 
-<p class = "text-success fw-bold">@message</p>
+<p class = "@messageClass">@message</p>
 
 @code {
     private UserContactForm userContactForm = new UserContactForm();
     private string message = "";
+    private string messageClass = "";
 
-    private void HandleSubmit() 
+    private async Task HandleSubmit() 
     {
         UserService.GetUserProfiles();
 
         bool isSuccess = UserService.CreateUserProfile(userContactForm);
         if (isSuccess)
         {
-            message = "User created successfully!";
+            message = "User created successfully! Returning to Contacts...";
+            messageClass = "text-success fw-bold";
+            userContactForm = new UserContactForm();
+
+            await ReturnHome();
         }
         else
         {
             message = "Error creating user. Please try again.";
+            messageClass = "text-danger fw-bold";
         }
+    }
+
+    private async Task ReturnHome()
+    {
+        await Task.Delay(1500);
+        NavigationManager.NavigateTo("/");
     }
 }
 
