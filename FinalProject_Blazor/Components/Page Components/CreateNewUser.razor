@@ -15,17 +15,17 @@
     <ValidationSummary /> <!-- Displays validation messages in case of improper user inputs -> 
 
     <div class="form-group pb-2 ">
-        <label for="firstName" class = "pb-1">First Name</label>
+        <label for="firstName" class = "pb-1"><span class="text-muted">*</span>First Name</label>
         <InputText id="firstName" class="form-control" @bind-Value="userContactForm.FirstName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
-        <label for="lastName" class = "pb-1">Last Name</label>
+        <label for="lastName" class = "pb-1"><span class="text-muted">*</span>Last Name</label>
         <InputText id="lastName" class="form-control" @bind-Value="userContactForm.LastName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
-        <label for="email" class="pb-1">Email</label>
+        <label for="email" class="pb-1"><span class="text-muted">*</span>Email</label>
         <InputText id="email" class="form-control" @bind-Value="userContactForm.Email" autocomplete="off"/>
     </div>
 
@@ -45,8 +45,8 @@
     </div>
 
     <div class="form-group pb-4">
-        <label for="municipality" class="pb-1">Municipality</label>
-        <InputText id="municipality" class="form-control" @bind-Value="userContactForm.Municipality" autocomplete="off"/>
+        <label for="Locality" class="pb-1">Locality</label>
+        <InputText id="Locality" class="form-control" @bind-Value="userContactForm.Locality" autocomplete="off"/>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3 float-md-end ">Add Contact</button>
@@ -63,6 +63,18 @@
     private async Task HandleSubmit() 
     {
         UserService.GetUserProfiles();
+
+        foreach (var property in userContactForm.GetType().GetProperties())
+        {
+            if (property.PropertyType == typeof(string))
+            {
+                var currentValue = (string?)property.GetValue(userContactForm);
+                if (currentValue != null)
+                {
+                    property.SetValue(userContactForm, currentValue.Trim());
+                }
+            }
+        }
 
         bool isSuccess = UserService.CreateUserProfile(userContactForm);
         if (isSuccess)

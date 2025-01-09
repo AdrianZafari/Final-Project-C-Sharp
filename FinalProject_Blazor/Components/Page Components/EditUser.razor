@@ -8,25 +8,23 @@
 
 <h1 class="fw-bold mb-4">Edit Contact</h1>
 
-<p>To edit a contact, fill in the fields that you want to update with new information.</p>
-<hr class="mb-5" />
 
 <EditForm Model="@updatedUserContactForm" OnValidSubmit="HandleSubmit" autocomplete="off">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="form-group pb-2">
-        <label for="firstName" class="pb-1">First Name</label>
+        <label for="firstName" class="pb-1"><span class="text-muted">*</span>First Name</label>
         <InputText id="firstName" class="form-control" @bind-Value="updatedUserContactForm.FirstName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
-        <label for="lastName" class="pb-1">Last Name</label>
+        <label for="lastName" class="pb-1"><span class="text-muted">*</span>Last Name</label>
         <InputText id="lastName" class="form-control" @bind-Value="updatedUserContactForm.LastName" autocomplete="off"/>
     </div>
 
     <div class="form-group pb-2">
-        <label for="email" class="pb-1">Email</label>
+        <label for="email" class="pb-1"><span class="text-muted">*</span>Email</label>
         <InputText id="email" class="form-control" @bind-Value="updatedUserContactForm.Email" autocomplete="off"/>
     </div>
 
@@ -46,8 +44,8 @@
     </div>
 
     <div class="form-group pb-4">
-        <label for="municipality" class="pb-1">Municipality</label>
-        <InputText id="municipality" class="form-control" @bind-Value="updatedUserContactForm.Municipality" autocomplete="off"/>
+        <label for="Locality" class="pb-1">Locality</label>
+        <InputText id="Locality" class="form-control" @bind-Value="updatedUserContactForm.Locality" autocomplete="off"/>
     </div>
 
     <button type="submit" class="btn btn-primary mt-3 float-md-end">Update Contact</button>
@@ -86,7 +84,7 @@
     private string message = "";
     private string messageClass = "";
 
-    
+
     protected override void OnInitialized()
     {
         var uri = NavigationManager.Uri; 
@@ -118,7 +116,7 @@
                         PhoneNumber = user.PhoneNumber,
                         Address = user.Address,
                         PostalNumber = user.PostalNumber,
-                        Municipality = user.Municipality
+                        Locality = user.Locality
                     };
             }
             else
@@ -136,6 +134,18 @@
 
     private async Task HandleSubmit()
     {
+        foreach (var property in updatedUserContactForm.GetType().GetProperties())
+        {
+            if (property.PropertyType == typeof(string))
+            {
+                var currentValue = (string?)property.GetValue(updatedUserContactForm);
+                if (currentValue != null)
+                {
+                    property.SetValue(updatedUserContactForm, currentValue.Trim());
+                }
+            }
+        }
+
         bool isSuccess = UserService.UpdateUserProfile(userId!, updatedUserContactForm);
         if (isSuccess)
         {

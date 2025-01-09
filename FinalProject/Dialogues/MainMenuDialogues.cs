@@ -69,8 +69,8 @@ public class MainMenuDialogues (IUserService userService) : IMainMenuDialogues
         Console.Write("Enter Postal Number: ");
         user.PostalNumber = Console.ReadLine()!.Trim();
 
-        Console.Write("Enter Municipality: ");
-        user.Municipality = Console.ReadLine()!;
+        Console.Write("Enter Locality: ");
+        user.Locality = Console.ReadLine()!;
         
         _userService.CreateUserProfile(user);
 
@@ -89,7 +89,7 @@ public class MainMenuDialogues (IUserService userService) : IMainMenuDialogues
             Console.WriteLine($"{"Phone Number:",-17}{user.PhoneNumber}");
             Console.WriteLine($"{"Address:",-17}{user.Address}");
             Console.WriteLine($"{"Postal Number:",-17}{user.PostalNumber}");
-            Console.WriteLine($"{"Municipality:",-17}{user.Municipality}\n\n");
+            Console.WriteLine($"{"Locality:",-17}{user.Locality}\n\n");
         }
         Console.WriteLine("Press any key to return...");
         Console.ReadKey();

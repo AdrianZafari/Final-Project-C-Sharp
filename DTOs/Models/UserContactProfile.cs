@@ -11,5 +11,5 @@ public class UserContactProfile
     public string PhoneNumber { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string PostalNumber { get; set; } = null!;
-    public string Municipality { get; set; } = null!;
+    public string Locality { get; set; } = null!;
 }

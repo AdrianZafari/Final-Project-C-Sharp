@@ -28,7 +28,7 @@ public class UserFactory_Tests
                                                                   string email,
                                                                   string phoneNumber,
                                                                   string address,
-                                                                  string municipality,
+                                                                  string Locality,
                                                                   string postalNumber)
     {
         // Arrange
@@ -39,7 +39,7 @@ public class UserFactory_Tests
             Email = email,
             PhoneNumber = phoneNumber,
             Address = address,
-            Municipality = municipality,
+            Locality = Locality,
             PostalNumber = postalNumber
         };
 
@@ -53,7 +53,7 @@ public class UserFactory_Tests
         Assert.Equal(form.Email, profile.Email);          
         Assert.Equal(form.PhoneNumber, profile.PhoneNumber);  
         Assert.Equal(form.Address, profile.Address);      
-        Assert.Equal(form.Municipality, profile.Municipality);  
+        Assert.Equal(form.Locality, profile.Locality);  
         Assert.Equal(form.PostalNumber, profile.PostalNumber);  
 
 

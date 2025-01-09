@@ -31,7 +31,7 @@ public class UserService_Tests
             Email = "jimothy.stevens@domain.com",
             PhoneNumber = "123-456-7890",
             Address = "123 Main St",
-            Municipality = "Test City",
+            Locality = "Test City",
             PostalNumber = "12345"
         };
 

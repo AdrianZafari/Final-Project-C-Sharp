@@ -96,8 +96,8 @@ public class UserService: IUserService
         if (!string.IsNullOrWhiteSpace(updatedForm.PostalNumber))
             targetUser.PostalNumber = updatedForm.PostalNumber;
 
-        if (!string.IsNullOrWhiteSpace(updatedForm.Municipality))
-            targetUser.Municipality = updatedForm.Municipality;
+        if (!string.IsNullOrWhiteSpace(updatedForm.Locality))
+            targetUser.Locality = updatedForm.Locality;
 
         try
         {

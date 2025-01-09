@@ -23,7 +23,7 @@ public class UserFactory
             Email = form.Email,
             PhoneNumber = form.PhoneNumber,
             Address = form.Address,
-            Municipality = form.Municipality,
+            Locality = form.Locality,
             PostalNumber = form.PostalNumber
         };
     }
