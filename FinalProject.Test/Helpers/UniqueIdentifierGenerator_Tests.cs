@@ -1,7 +1,7 @@
 ﻿
-using Social.Handlers;
+using Social.Helpers;
 
-namespace FinalProject.Test.Handlers;
+namespace FinalProject.Test.Helpers;
 
 public class UniqueIdentifierGenerator_Tests
 {

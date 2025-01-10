@@ -2,7 +2,7 @@
 
 using DTOs.DTOs;
 
-namespace Social.Handlers;
+namespace Social.Helpers;
 
 public class ValidateUserContactForm
 {

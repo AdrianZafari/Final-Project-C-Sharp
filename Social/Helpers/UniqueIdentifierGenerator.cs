@@ -2,7 +2,7 @@
 
 using System.Diagnostics;
 
-namespace Social.Handlers;
+namespace Social.Helpers;
 
 public class UniqueIdentifierGenerator
 {

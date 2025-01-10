@@ -1,9 +1,9 @@
 ﻿
 
 using DTOs.DTOs;
-using Social.Handlers;
+using Social.Helpers;
 
-namespace FinalProject.Test.Handlers;
+namespace FinalProject.Test.Helpers;
 
 public class ValidateUserContactForm_Tests
 {

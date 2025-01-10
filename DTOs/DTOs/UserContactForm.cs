@@ -15,7 +15,7 @@ public class UserContactForm
     public string LastName { get; set; } = null!;
 
     [Required(ErrorMessage = "Email cannot be left empty")]
-    [RegularExpression(@"^\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\s*$", ErrorMessage = "Please enter a valid email address")]
+    [RegularExpression(@"^\s*[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\s*$", ErrorMessage = "Please enter a valid email address.")]
     public string Email { get; set; } = null!;
 
     [RegularExpression(@"^\s*\+?[0-9]{1,3}?[-.\s]?([0-9]{2,4})?[-.\s]?[0-9]{3,4}[-.\s]?[0-9]{4}\s*$", ErrorMessage = "Please enter a valid phone number.")]
@@ -24,10 +24,10 @@ public class UserContactForm
     [RegularExpression(@"^\s*[\p{L}\p{N}\s\-.,]+\s*$", ErrorMessage = "Please enter a valid address.")]
     public string Address { get; set; } = null!;
 
-    [RegularExpression(@"^\s*\d{5}\s*$", ErrorMessage = "Please enter a valid postal number")]
+    [RegularExpression(@"^\s*\d{5}\s*$", ErrorMessage = "Please enter a valid 5 digit postal number.")]
     public string PostalNumber { get; set; } = null!;
 
-    [RegularExpression(@"^\s*[A-Za-zåäöÅÄÖ\- ]{2,100}\s*$", ErrorMessage = "Please enter a valid locality")]
+    [RegularExpression(@"^\s*[A-Za-zåäöÅÄÖ\- ]{2,100}\s*$", ErrorMessage = "Please enter a valid locality.")]
     public string Locality { get; set; } = null!;
 
 }

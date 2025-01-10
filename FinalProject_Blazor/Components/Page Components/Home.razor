@@ -19,7 +19,7 @@
 {
     /* Some of the styling of accordion with bootstrap was done with the help of ChatGPT-4o */
     <div class="accordion" id="userProfilesAccordion">
-        @foreach (var user in filteredUserProfiles.OrderBy(u => u.LastName))
+        @foreach (var user in filteredUserProfiles?.OrderBy(u => u.LastName)!)
         {
             <div class="accordion-item">
                 <h2 class="accordion-header d-flex align-items-center justify-content-between" id="heading-@user.Id">
@@ -66,7 +66,7 @@ else
 }
 
 <!-- 
-Modal was created with the help of ChatGPT although I have edited it to fit my use case. 
+Modal boilerplate was written with the help of ChatGPT, I have edited it to fit my use case. 
 The modal is intended to prevent accidentally deleting contacts and prompts the user to confirm their choice.
 Since bootstrap already had this feature, it made sense to make use of it for adding this quality of life feature.
 Notably, this was not a required feature, not even for the highest grade, however it made sense to me to add this. 
@@ -93,8 +93,8 @@ Notably, this was not a required feature, not even for the highest grade, howeve
 
 @code { // Live search functionality
     private string searchQuery = string.Empty;
-    private IEnumerable<UserContactProfile> allUserProfiles;
-    private IEnumerable<UserContactProfile> filteredUserProfiles;
+    private IEnumerable<UserContactProfile>? allUserProfiles;
+    private IEnumerable<UserContactProfile>? filteredUserProfiles;
 
     protected override void OnInitialized()
     {
@@ -111,7 +111,7 @@ Notably, this was not a required feature, not even for the highest grade, howeve
         else
         {
             string trimmedQuery = searchQuery.Trim().ToLowerInvariant();
-            filteredUserProfiles = allUserProfiles
+            filteredUserProfiles = allUserProfiles?
                 .Where(u => u.FirstName.ToLowerInvariant().Contains(trimmedQuery) ||
                             u.LastName.ToLowerInvariant().Contains(trimmedQuery)  ||
                             u.Email.ToLowerInvariant().Contains(trimmedQuery)     ||
