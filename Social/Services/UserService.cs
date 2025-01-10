@@ -76,8 +76,6 @@ public class UserService: IUserService
             return false;
         }
 
-        // Change the following to an equality condition instead of null or white space (this is for GUI implementation down the line)
-
         if (!string.IsNullOrWhiteSpace(updatedForm.FirstName))
             targetUser.FirstName = updatedForm.FirstName;
 
