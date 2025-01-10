@@ -2,9 +2,7 @@
 
 namespace Data.Interfaces;
 
-public interface IFileService
+public interface IFileService :IFileReader, IFileWriter 
 {
-    string GetContentFromFile();
-    bool SaveContentToFile(string content);
 
 }

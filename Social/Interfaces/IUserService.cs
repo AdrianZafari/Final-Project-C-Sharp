@@ -1,14 +1,6 @@
-﻿
+﻿namespace Social.Interfaces;
 
-using DTOs.DTOs;
-using DTOs.Models;
-
-namespace Social.Interfaces;
-
-public interface IUserService
+public interface IUserService : IUserCreate, IUserRead, IUserUpdate, IUserDelete
 {
-    bool CreateUserProfile(UserContactForm form);
-    IEnumerable<UserContactProfile> GetUserProfiles();
-    bool UpdateUserProfile(string userId, UserContactForm updatedForm);
-    bool DeleteUserProfile(string userId);
+
 }

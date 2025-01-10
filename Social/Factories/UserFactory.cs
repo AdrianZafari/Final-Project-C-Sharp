@@ -6,7 +6,7 @@ using Social.Handlers;
 
 namespace Social.Factories;
 
-public class UserFactory
+public static class UserFactory
 {
     public static UserContactForm Create()
     {
@@ -17,7 +17,7 @@ public class UserFactory
     {
         return new UserContactProfile()
         {
-            Id = null!, // This is assigned in the CreateUserProfile() method in UserService. The handler responsible is tested separetely.
+            Id = null!, // This is assigned in the CreateUserProfile() method in UserService. The handler responsible is tested separetely. 
             FirstName = form.FirstName,
             LastName = form.LastName,
             Email = form.Email,
